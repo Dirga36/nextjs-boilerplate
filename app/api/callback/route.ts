@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
         }
 
         // Step 3: Fetch ORCID profile (replace ID with actual ORCID from token if dynamic)
-        const profileRes = await fetch("https://orcid.org/${orcidId}", {
+        const profileRes = await fetch(`https://orcid.org/${orcidId}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 Accept: "application/json",
