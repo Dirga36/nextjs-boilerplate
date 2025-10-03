@@ -1,7 +1,23 @@
-import { useState } from "react";
-
 "use client";
 
+type EmploymentSummary = {
+  "department-name": string;
+  "role-title": string;
+  organization: {
+    name: string;
+    address: {
+      city: string;
+      region: string;
+      country: string;
+    };
+  };
+  "start-date": {
+    year: { value: string };
+    month: { value: string };
+    day: null | { value: string };
+  };
+  "end-date": null | object;
+};
 
 type OrcidData = {
   "orcid-identifier": {
@@ -33,33 +49,16 @@ type OrcidData = {
   };
   "activities-summary": {
     employments: {
-      affiliation-group: Array<{
+      "affiliation-group": Array<{
         summaries: Array<{
-          "employment-summary": {
-            "department-name": string;
-            "role-title": string;
-            "organization": {
-              name: string;
-              address: {
-                city: string;
-                region: string;
-                country: string;
-              };
-            };
-            "start-date": {
-              year: { value: string };
-              month: { value: string };
-              day: null | { value: string };
-            };
-            "end-date": null | object;
-          };
+          "employment-summary": EmploymentSummary;
         }>;
       }>;
     };
   };
 };
 
-const mockData: OrcidData = {
+const data: OrcidData = {
   // ... paste your JSON data here ...
   "orcid-identifier": {
     "uri": "https://orcid.org/0009-0004-8181-9700",
@@ -139,15 +138,13 @@ function formatDate(timestamp?: number) {
 }
 
 export default function Dashboard() {
-  const [data] = useState<OrcidData>(mockData);
-
-  const employment =
-    data["activities-summary"].employments.affiliation-group[0]?.summaries[0]
+  const employment: EmploymentSummary | undefined =
+    data["activities-summary"].employments["affiliation-group"][0]?.summaries[0]
       ?.["employment-summary"];
-
   return (
     <main style={{ maxWidth: 600, margin: "2rem auto", fontFamily: "sans-serif" }}>
       <h1>ORCID Dashboard</h1>
+      <br />
       <section>
         <h2>Profile</h2>
         <p>
@@ -177,6 +174,7 @@ export default function Dashboard() {
         </p>
       </section>
       <section>
+        <br />
         <h2>Employment</h2>
         {employment ? (
           <div>
