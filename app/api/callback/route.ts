@@ -27,14 +27,14 @@ export async function GET(req: NextRequest) {
 
         const tokenData = await tokenRes.json();
         const accessToken = tokenData.access_token;
-        const orcidId = tokenData.orcid;
+        //const orcidId = tokenData.orcid; <-- if you want to fetch yourself
 
         if (!accessToken) {
             return NextResponse.json({ error: "Failed to get access token", tokenData }, { status: 500 });
         }
 
         // Step 3: Fetch ORCID profile (replace ID with actual ORCID from token if dynamic)
-        const profileRes = await fetch(`https://orcid.org/${orcidId}`, {
+        const profileRes = await fetch(`https://orcid.org/0009-0000-2772-8374`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 Accept: "application/json",
